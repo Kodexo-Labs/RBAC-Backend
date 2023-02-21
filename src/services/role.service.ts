@@ -10,12 +10,14 @@ export const createRole = async (input: CreateRoleInput) => {
   )) as Role;
 };
 
-export const getRoles = () => {
-  return roleRepository.find();
+export const getRoles = async () => {
+  return await roleRepository.createQueryBuilder("role")
+  .leftJoinAndSelect("role.users", "user")
+  .getMany();
 }
 
-export const getRoleById = (userId: string): Promise<Role | null> => {
-  return roleRepository.findOneBy({ id: userId });
+export const getRoleById = (roleId: string): Promise<Role | null> => {
+  return roleRepository.findOne({where: {id: roleId}, relations: {users: true}});
 }
 
 export const updatePermission = async (userId: string, permission: string[]) => {

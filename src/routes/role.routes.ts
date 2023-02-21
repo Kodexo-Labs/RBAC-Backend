@@ -9,15 +9,15 @@ const router = express.Router();
 
 router.use(deserializeUser, requireUser);
 
-router.post('/', addRole);
-router.get('/', getAllRoles)
-router.delete('/:id', deleteRole)
+router.post('/', hasPermission('role:add'), addRole);
+router.get('/', hasPermission('role:read'), getAllRoles)
+router.delete('/:id',hasPermission('role:delete'),  deleteRole)
 
 // Add new Permission to role
-router.patch('/permission/:id', addPermission)
+router.patch('/permission/:id', hasPermission('permissions:add'), addPermission)
 
 // Remove permission from role
-router.delete('/permission/:id', removePermission)
+router.delete('/permission/:id', hasPermission('permissions:remove'), removePermission)
 
 
 

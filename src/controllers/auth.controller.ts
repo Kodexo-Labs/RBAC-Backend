@@ -1,3 +1,4 @@
+import { Role } from './../entities/role.entity';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
 import config from 'config';
 import { CreateUserInput, LoginUserInput } from '../schemas/user.schema';
@@ -10,6 +11,7 @@ import {
 import AppError from '../utils/appError';
 import { signJwt, verifyJwt } from '../utils/jwt';
 import { User } from '../entities/user.entity';
+import {getRoleById} from '../services/role.service';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -56,12 +58,6 @@ export const registerUserHandler = async (
       },
     });
   } catch (err:any) {
-    if (err.code === '23505') {
-      return res.status(409).json({
-        status: 'fail',
-        message: 'User with that email already exist',
-      });
-    }
     next(err);
   }
 };

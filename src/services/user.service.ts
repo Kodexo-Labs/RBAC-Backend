@@ -13,7 +13,11 @@ export const createUser = async (input: CreateUserInput) => {
 };
 
 export const getAllUsers = async () => {
-  return await userRepository.find();
+  return await userRepository.find({
+    relations: {
+      role: true,
+    },
+  });
 }
 
 export const deleteUser = async(userId: string) => {
@@ -29,7 +33,7 @@ export const findUserByEmail = async ({ email }: { email: string }) => {
 };
 
 export const findUserById = async (userId: string) => {
-  return await userRepository.findOneBy({ id: userId });
+  return await userRepository.findOne({where: {id: userId}, relations: {role: true}});
 };
 
 export const findUser = async (query: Object) => {
